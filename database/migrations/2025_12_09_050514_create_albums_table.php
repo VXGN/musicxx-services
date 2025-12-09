@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('albums', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('title');
 
-            // ROLE: listener = user biasa, publisher = pembuat/unggah konten
-            $table->enum('role', ['listener', 'publisher'])->default('listener');
+            // relasi ke artist
+            $table->foreignId('artist_id')->constrained('artists')->onDelete('cascade');
 
+            $table->string('cover_image')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('albums');
     }
 };
