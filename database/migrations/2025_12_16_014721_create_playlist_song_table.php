@@ -11,17 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('playlists', function (Blueprint $table) {
+        Schema::create('playlist_song', function (Blueprint $table) {
             $table->id();
-
-            // Relasi ke tabel users (pemilik playlist)
-            $table->foreignId('user_id')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
-
-            $table->string('name');
-            $table->text('description')->nullable(); // opsional, tapi disarankan
-
             $table->timestamps();
         });
     }
@@ -31,6 +22,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playlists');
+        Schema::dropIfExists('playlist_song');
     }
 };
+
+// Kenapa pivot?
+
+// 1 playlist → banyak lagu
+
+// 1 lagu → bisa masuk banyak playlist
+// 👉 Many to Many
