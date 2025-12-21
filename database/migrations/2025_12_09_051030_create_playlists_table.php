@@ -9,12 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-     public function up(): void
+    public function up(): void
     {
         Schema::create('playlists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+
+            // Relasi ke tabel users (pemilik playlist)
+            $table->foreignId('user_id')
+                  ->constrained('users')
+                  ->cascadeOnDelete();
+
             $table->string('name');
+            $table->text('description')->nullable(); // opsional, tapi disarankan
+
             $table->timestamps();
         });
         // M2M relation 
