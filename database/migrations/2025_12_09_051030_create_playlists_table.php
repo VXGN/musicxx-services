@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('playlists', function (Blueprint $table) {
             $table->id();
-
-            // owner playlist -> user
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-
             $table->string('name');
             $table->timestamps();
+        });
+        // M2M relation 
+        Schema::create('playlist_song', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('playlist_id')->constrained('playlists')->onDelete('cascade');
+            $table->foreignId('song_id')->constrained('songs')->onDelete('cascade');
+            $table->timestamps();
+            $table->unique(['playlist_id', 'song_id']);
         });
     }
 
@@ -27,6 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('playlist_song');
         Schema::dropIfExists('playlists');
     }
 };
