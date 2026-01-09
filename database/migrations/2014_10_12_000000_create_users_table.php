@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('role', ['listener', 'publisher'])->default('listener');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

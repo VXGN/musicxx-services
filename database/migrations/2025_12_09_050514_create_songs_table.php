@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('album_id')->nullable()->constrained('albums')->onDelete('set null');
 
             $table->integer('duration')->nullable();   // detik
-            $table->string('file_url')->nullable();   // URL ke file audio
+            $table->text('file_url')->nullable();   // URL ke file audio
             $table->timestamps();
         });
     }
