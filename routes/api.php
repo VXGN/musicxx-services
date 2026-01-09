@@ -22,11 +22,13 @@ use App\Http\Controllers\PlaylistController;
 // Auth Routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
-Route::post('refresh', [AuthController::class, 'refresh']);
-Route::get('me', [AuthController::class, 'me']);
-
-Route::apiResource('songs', SongController::class);
-Route::apiResource('albums', AlbumController::class);
-Route::apiResource('artists', ArtistController::class);
-Route::apiResource('playlists', PlaylistController::class);
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('me', [AuthController::class, 'me']);
+    
+    Route::apiResource('songs', SongController::class);
+    Route::apiResource('albums', AlbumController::class);
+    Route::apiResource('artists', ArtistController::class);
+    Route::apiResource('playlists', PlaylistController::class);
+});
