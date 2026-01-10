@@ -13,7 +13,7 @@ class ArtistController extends Controller
     public function index()
     {
         try {
-            $artists = Artist::with(['albums', 'songs'])->get();
+            $artists = Artist::with(['albums', 'songs', 'user'])->get();
 
             return ApiFormater::createJSON(200, 'Success', $artists);
         } catch (Exception $e) {
@@ -24,7 +24,7 @@ class ArtistController extends Controller
     public function show($id)
     {
         try {
-            $artist = Artist::with(['albums', 'songs'])->find($id);
+            $artist = Artist::with(['albums', 'songs', 'user'])->find($id);
 
             if (!$artist) {
                 return ApiFormater::createJSON(404, 'Artist not found');
@@ -39,6 +39,19 @@ class ArtistController extends Controller
     public function store(Request $request)
     {
         try {
+            $user = auth('api')->user();
+
+            // Check if user is a publisher
+            if ($user->role !== 'publisher') {
+                return ApiFormater::createJSON(403, 'Only publishers can create an artist profile');
+            }
+
+            // Check if user already has an artist profile
+            $existingArtist = Artist::where('user_id', $user->id)->first();
+            if ($existingArtist) {
+                return ApiFormater::createJSON(422, 'You already have an artist profile', $existingArtist);
+            }
+
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'bio' => 'nullable|string',
@@ -48,9 +61,13 @@ class ArtistController extends Controller
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $artist = Artist::create($request->all());
+            $artist = Artist::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'bio' => $request->bio,
+            ]);
 
-            return ApiFormater::createJSON(201, 'Artist created successfully', $artist);
+            return ApiFormater::createJSON(201, 'Artist created successfully', $artist->load('user'));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to create artist', ['error' => $e->getMessage()]);
         }
@@ -59,10 +76,20 @@ class ArtistController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $user = auth('api')->user();
             $artist = Artist::find($id);
 
             if (!$artist) {
                 return ApiFormater::createJSON(404, 'Artist not found');
+            }
+
+            // Check if user is a publisher and owns this artist profile
+            if ($user->role !== 'publisher') {
+                return ApiFormater::createJSON(403, 'Only publishers can update artist profiles');
+            }
+
+            if ($artist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only update your own artist profile');
             }
 
             $validator = Validator::make($request->all(), [
@@ -74,9 +101,9 @@ class ArtistController extends Controller
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $artist->update($request->all());
+            $artist->update($request->only(['name', 'bio']));
 
-            return ApiFormater::createJSON(200, 'Artist updated successfully', $artist);
+            return ApiFormater::createJSON(200, 'Artist updated successfully', $artist->load('user'));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to update artist', ['error' => $e->getMessage()]);
         }
@@ -85,10 +112,20 @@ class ArtistController extends Controller
     public function destroy($id)
     {
         try {
+            $user = auth('api')->user();
             $artist = Artist::find($id);
 
             if (!$artist) {
                 return ApiFormater::createJSON(404, 'Artist not found');
+            }
+
+            // Check if user is a publisher and owns this artist profile
+            if ($user->role !== 'publisher') {
+                return ApiFormater::createJSON(403, 'Only publishers can delete artist profiles');
+            }
+
+            if ($artist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only delete your own artist profile');
             }
 
             $artist->delete();

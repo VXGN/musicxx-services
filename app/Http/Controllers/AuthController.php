@@ -22,7 +22,7 @@ class AuthController extends Controller
             'role' => 'required|string|in:listener,publisher',
             'password' => 'required|string|min:6',
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
@@ -31,6 +31,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         $token = auth('api')->login($user);

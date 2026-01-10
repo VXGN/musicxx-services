@@ -16,12 +16,17 @@ class LogMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $response = $next($request);
+
+        // Log after the request to capture authenticated user
         Log::create([
+            'log_userid' => auth('api')->id(),
             'log_method' => $request->method(),
             'log_url' => $request->fullUrl(),
             'log_ip' => $request->ip(),
             'log_useragent' => $request->userAgent(),
         ]);
-        return $next($request);
+
+        return $response;
     }
 }
