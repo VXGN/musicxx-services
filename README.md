@@ -105,21 +105,21 @@
 - `POST /api/refresh` — Refresh token JWT
 - `GET /api/me` — Info pengguna saat ini
 
-### Artist (Hanya Publisher)
+### Artist
 - `GET /api/artists` — Daftar semua artis
 - `GET /api/artists/{id}` — Detail artis
 - `POST /api/artists` — Buat profil artis (terhubung ke user)
 - `PUT /api/artists/{id}` — Update profil artis sendiri
 - `DELETE /api/artists/{id}` — Hapus profil artis sendiri
 
-### Album (Hanya Publisher)
+### Album
 - `GET /api/albums` — Daftar semua album
 - `GET /api/albums/{id}` — Detail album
 - `POST /api/albums` — Buat album (terhubung ke artis sendiri)
 - `PUT /api/albums/{id}` — Update album sendiri
 - `DELETE /api/albums/{id}` — Hapus album sendiri
 
-### Song (Hanya Publisher)
+### Song
 - `GET /api/songs` — Daftar semua lagu
 - `GET /api/songs/{id}` — Detail lagu
 - `POST /api/songs` — Buat lagu (terhubung ke artis sendiri, opsional album)
