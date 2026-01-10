@@ -32,6 +32,7 @@
         Route::apiResource('artists', ArtistController::class);
         Route::apiResource('playlists', PlaylistController::class);
 
+        //by sulth
         Route::post('playlists/{id}/songs', [PlaylistController::class, 'addSong']);
         Route::delete('playlists/{id}/songs/{songId}', [PlaylistController::class, 'removeSong']);
     });

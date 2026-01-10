@@ -45,4 +45,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Playlist::class);
     }
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'log_userid', 'id');
+    }
+
+    public function artistProfile()
+    {
+        return $this->hasOne(Artist::class, 'user_id', 'id');
+    }
 }
