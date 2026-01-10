@@ -1,0 +1,20 @@
+Name : Pandora
+Artist : Wisp
+Genre(s) : Nu Gaze, alternative rock
+Album: Pandora
+Url: https://sfwyfiymjuyvbjdhmgji.supabase.co/storage/v1/object/sign/Music/Pandora.mp3?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yMWJhN2ZjNS1iMGM1LTQxN2MtYjUxMi1lYjAyYzkzNGI2NTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJNdXNpYy9QYW5kb3JhLm1wMyIsImlhdCI6MTc2Nzk2NjE0MSwiZXhwIjoxNzk5NTAyMTQxfQ.VCCvSjxGTdcxTf6ooiq5gKxxLKVr3aCKHCyHD61iSA4
+
+Sumeru
+Genre(s): Classical
+Album: Genshin Impact - The Unfathomable Sand Dunes (Original Game Soundtrack)
+Url: https://sfwyfiymjuyvbjdhmgji.supabase.co/storage/v1/object/sign/Music/Sumeru.mp3?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yMWJhN2ZjNS1iMGM1LTQxN2MtYjUxMi1lYjAyYzkzNGI2NTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJNdXNpYy9TdW1lcnUubXAzIiwiaWF0IjoxNzY3OTY2MTczLCJleHAiOjE3OTk1MDIxNzN9.pJAOfFIjYIXjSVTEn1znavLiaEmOkHqjWbPleUGXGBw
+
+Swirl of Shamshir
+Genre(s): Classical
+Album: Genshin Impact - Forest of Jnana and Vidya (Original)
+Url: https://sfwyfiymjuyvbjdhmgji.supabase.co/storage/v1/object/sign/Music/Swirls%20of%20Shamshir.mp3?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yMWJhN2ZjNS1iMGM1LTQxN2MtYjUxMi1lYjAyYzkzNGI2NTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJNdXNpYy9Td2lybHMgb2YgU2hhbXNoaXIubXAzIiwiaWF0IjoxNzY3OTY2MTgxLCJleHAiOjE3OTk1MDIxODF9.0Zm98Qft7oD1S8BaOskDsL4CHkXIgNEgoyDc15JHVRY
+
+Your Face
+Genre(s): Nu Gaze, alternative rock
+Album: Pandora
+Url: https://sfwyfiymjuyvbjdhmgji.supabase.co/storage/v1/object/sign/Music/Your%20Face.mp3?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yMWJhN2ZjNS1iMGM1LTQxN2MtYjUxMi1lYjAyYzkzNGI2NTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJNdXNpYy9Zb3VyIEZhY2UubXAzIiwiaWF0IjoxNzY3OTY2MTg3LCJleHAiOjE3OTk1MDIxODd9.VJ90nI4HbbaQJy4ZQGlQM2O-OI0yofcnfWHhTkwqXtY
