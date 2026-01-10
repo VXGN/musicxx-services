@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaylistController;
 
 /*
