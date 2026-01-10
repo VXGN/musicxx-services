@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('duration')->nullable();   // detik
             $table->text('file_url')->nullable();   // URL ke file audio
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

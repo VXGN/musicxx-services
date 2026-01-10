@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id("log_id");
+            $table->foreignId('log_userid')->nullable()->constrained('users')->onDelete('set null');
             $table->string("log_method");
             $table->string("log_ip");
             $table->string("log_useragent");

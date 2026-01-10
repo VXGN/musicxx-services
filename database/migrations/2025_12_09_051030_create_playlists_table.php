@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable(); // opsional, tapi disarankan
 
             $table->timestamps();
+            $table->softDeletes();
         });
         // M2M relation 
         Schema::create('playlist_song', function (Blueprint $table) {
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreignId('song_id')->constrained('songs')->onDelete('cascade');
             $table->timestamps();
             $table->unique(['playlist_id', 'song_id']);
+            $table->softDeletes();
         });
     }
 
