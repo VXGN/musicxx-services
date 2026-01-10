@@ -35,4 +35,7 @@
         //by sulth
         Route::post('playlists/{id}/songs', [PlaylistController::class, 'addSong']);
         Route::delete('playlists/{id}/songs/{songId}', [PlaylistController::class, 'removeSong']);
+        
+        Route::post('songs/{id}', [SongController::class, 'store']);
+        Route::delete('songs/{id}', [SongController::class, 'destroy']);
     });
