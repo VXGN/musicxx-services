@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
@@ -19,23 +20,14 @@ use App\Http\Controllers\PlaylistController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Authentication
-Route::prefix("/auth")->group(function () {
-    Route::post("/login", [AuthController::class, "login"]);
-    Route::post("/register", [AuthController::class, "register"]);
-    Route::get("/refresh", [AuthController::class, "refresh"]);
-});
-
-Route::middleware("jwt.auth")->group(function () {
-
-    // Authentication
-    Route::delete("/auth/logout", [AuthController::class, "logout"]);
-    Route::get("/auth/me", [AuthController::class, "me"]);
-
+// Auth Routes
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('me', [AuthController::class, 'me']);
+    
     Route::apiResource('songs', SongController::class);
     Route::apiResource('albums', AlbumController::class);
     Route::apiResource('artists', ArtistController::class);
