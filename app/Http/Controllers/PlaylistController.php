@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Dedoc\Scramble\Attributes\Response;
+use Dedoc\Scramble\Attributes\Header;
 
+#[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
 class PlaylistController extends Controller
 {
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(500, description: 'Failed to fetch playlists', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch playlists","data":{"error":"Detailed error message"}}'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Success","data":[{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}]}'])]
     public function index()
@@ -25,6 +28,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Success","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
     #[Response(500, description: 'Failed to fetch playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch playlist","data":{"error":"Detailed error message"}}'])]
@@ -43,6 +47,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(201, description: 'Playlist created successfully', mediaType: 'application/json', type: 'playlist', examples: ['{"status":201,"message":"Playlist created successfully","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
     #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"name":["The name field is required."],"song_id":["The selected song id is invalid."]}}'])]
     #[Response(500, description: 'Failed to create playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to create playlist","data":{"error":"Detailed error message"}}'])]
@@ -73,6 +78,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only update your own playlists',
@@ -113,6 +119,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only delete your own playlists',
@@ -142,6 +149,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only add songs to your own playlists',
@@ -185,6 +193,7 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error',examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only remove songs from your own playlists',
