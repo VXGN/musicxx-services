@@ -41,12 +41,10 @@ class ArtistController extends Controller
         try {
             $user = auth('api')->user();
 
-            // Check if user is a publisher
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can create an artist profile');
             }
 
-            // Check if user already has an artist profile
             $existingArtist = Artist::where('user_id', $user->id)->first();
             if ($existingArtist) {
                 return ApiFormater::createJSON(422, 'You already have an artist profile', $existingArtist);

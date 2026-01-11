@@ -8,6 +8,8 @@ use App\Models\Song;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class SongController extends Controller
 {
@@ -42,7 +44,6 @@ class SongController extends Controller
         try {
             $user = auth('api')->user();
 
-            // Check if user is a publisher
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can create songs');
             }
@@ -58,7 +59,7 @@ class SongController extends Controller
                 'title' => 'required|string|max:255',
                 'album_id' => 'nullable|exists:albums,id',
                 'duration' => 'nullable|integer|min:0',
-                'file_url' => 'nullable|string',
+                'file' => 'required|file|mimes:mp3,wav,flac|max:5120',
             ]);
 
             if ($validator->fails()) {
@@ -73,12 +74,35 @@ class SongController extends Controller
                 }
             }
 
+            // up 
+            $file = $request->file('file');
+            $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $bucket = 'Music';
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_ROLE_KEY'),
+                'Content-Type'  => $file->getMimeType(),
+            ])->withBody(
+                file_get_contents($file->getRealPath()),
+                $file->getMimeType()
+            )->post(
+                env('SUPABASE_URL') . "/storage/v1/object/$bucket/$fileName"
+            );
+
+            if ($response->failed()) {
+                return ApiFormater::createJSON(500, 'Failed to upload music file', [
+                    'error' => $response->body()
+                ]);
+            }
+
+            $fileUrl = env('SUPABASE_URL') . "/storage/v1/object/public/$bucket/$fileName";
+
             $song = Song::create([
                 'title' => $request->title,
                 'artist_id' => $artist->id,
                 'album_id' => $request->album_id,
                 'duration' => $request->duration,
-                'file_url' => $request->file_url,
+                'file_url' => $fileUrl,
             ]);
 
             return ApiFormater::createJSON(201, 'Song created successfully', $song->load(['artist', 'album']));
@@ -97,7 +121,6 @@ class SongController extends Controller
                 return ApiFormater::createJSON(404, 'Song not found');
             }
 
-            // Check if user is a publisher and owns this song
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can update songs');
             }

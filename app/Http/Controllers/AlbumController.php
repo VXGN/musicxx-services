@@ -42,12 +42,10 @@ class AlbumController extends Controller
         try {
             $user = auth('api')->user();
 
-            // Check if user is a publisher
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can create albums');
             }
 
-            // Get the artist profile linked to this user
             $artist = Artist::where('user_id', $user->id)->first();
 
             if (!$artist) {
@@ -85,7 +83,6 @@ class AlbumController extends Controller
                 return ApiFormater::createJSON(404, 'Album not found');
             }
 
-            // Check if user is a publisher and owns this album
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can update albums');
             }
@@ -123,7 +120,6 @@ class AlbumController extends Controller
                 return ApiFormater::createJSON(404, 'Album not found');
             }
 
-            // Check if user is a publisher and owns this album
             if ($user->role !== 'publisher') {
                 return ApiFormater::createJSON(403, 'Only publishers can delete albums');
             }
