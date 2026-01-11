@@ -12,8 +12,8 @@ use Dedoc\Scramble\Attributes\Response;
 
 class PlaylistController extends Controller
 {
-    #[Response(500, description: 'Failed to fetch playlists', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist')]
+    #[Response(500, description: 'Failed to fetch playlists', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch playlists","data":{"error":"Detailed error message"}}'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Success","data":[{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}]}'])]
     public function index()
     {
         try {
@@ -25,9 +25,9 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist')]
-    #[Response(500, description: 'Failed to fetch playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Success","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
+    #[Response(500, description: 'Failed to fetch playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch playlist","data":{"error":"Detailed error message"}}'])]
     public function show($id)
     {
         try {
@@ -43,9 +43,9 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(201, description: 'Playlist created successfully', mediaType: 'application/json', type: 'playlist')]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(500, description: 'Failed to create playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(201, description: 'Playlist created successfully', mediaType: 'application/json', type: 'playlist', examples: ['{"status":201,"message":"Playlist created successfully","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"name":["The name field is required."],"song_id":["The selected song id is invalid."]}}'])]
+    #[Response(500, description: 'Failed to create playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to create playlist","data":{"error":"Detailed error message"}}'])]
     public function store(Request $request)
     {
         try {
@@ -73,14 +73,14 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only update your own playlists',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"You can only update your own playlists","data":[] }'])]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Playlist updated successfully', mediaType: 'application/json', type: 'playlist')]
-    #[Response(500, description: 'Failed to update playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"name":["The name field is required."]}}'])]
+    #[Response(200, description: 'Playlist updated successfully', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Playlist updated successfully","data":{"id":1,"name":"Updated Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
+    #[Response(500, description: 'Failed to update playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to update playlist","data":{"error":"Detailed error message"}}'])]
     public function update(Request $request, $id)
     {
         try {
@@ -113,13 +113,13 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only delete your own playlists',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"You can only delete your own playlists","data":[] }'])]
-    #[Response(200, description: 'Playlist deleted successfully', mediaType: 'application/json', type: 'success')]
-    #[Response(500, description: 'Failed to delete playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Playlist deleted successfully', mediaType: 'application/json', type: 'success', examples: ['{"status":200,"message":"Playlist deleted successfully","data":[] }'])]
+    #[Response(500, description: 'Failed to delete playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to delete playlist","data":{"error":"Detailed error message"}}'])]
     public function destroy($id)
     {
         try {
@@ -142,15 +142,15 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only add songs to your own playlists',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"You can only add songs to your own playlists","data":[] }'])]
-    #[Response(409, description: 'Song already in playlist', mediaType: 'application/json', type: 'error')]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Song added to playlist successfully', mediaType: 'application/json', type: 'playlist')]
-    #[Response(500, description: 'Failed to add song to playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(409, description: 'Song already in playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":409,"message":"Song already in playlist","data":[] }'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"song_id":["The selected song id is invalid."]}}'])]
+    #[Response(200, description: 'Song added to playlist successfully', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Song added to playlist successfully","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
+    #[Response(500, description: 'Failed to add song to playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to add song to playlist","data":{"error":"Detailed error message"}}'])]
     public function addSong(Request $request, $id)
     {
         try {
@@ -185,14 +185,14 @@ class PlaylistController extends Controller
         }
     }
 
-    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error',examples: ['{"status":404,"message":"Playlist not found","data":[] }'])]
     #[Response(403,
     description: 'You can only remove songs from your own playlists',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"You can only remove songs from your own playlists","data":[] }'])]
-    #[Response(404, description: 'Song not found in playlist', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Song removed from playlist successfully', mediaType: 'application/json', type: 'playlist')]
-    #[Response(500, description: 'Failed to remove song from playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Song not found in playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found in playlist","data":[] }'])]
+    #[Response(200, description: 'Song removed from playlist successfully', mediaType: 'application/json', type: 'playlist', examples: ['{"status":200,"message":"Song removed from playlist successfully","data":{"id":1,"name":"Playlist Name","user":{"id":2,"name":"User Name"},"songs":[{"id":3,"title":"Song Title"}]}}'])]
+    #[Response(500, description: 'Failed to remove song from playlist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to remove song from playlist","data":{"error":"Detailed error message"}}'])]
     public function removeSong($id, $songId)
     {
         try {
