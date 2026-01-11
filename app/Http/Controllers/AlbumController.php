@@ -26,9 +26,9 @@ class AlbumController extends Controller
         }
     }
 
-    #[Response(500, description: 'Failed to fetch album', mediaType: 'application/json', type: 'error')]
-    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album')]
+    #[Response(500, description: 'Failed to fetch album', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch album","data":{"error":"Detailed error message"}}'])]
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album', examples: ['{"status":200,"message":"Success","data":{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[{"id":1,"title":"Song Title"}]}}'])]
     public function show($id)
     {
         try {
@@ -49,8 +49,8 @@ class AlbumController extends Controller
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"Only publishers can create albums","data":[] }',
     '{"status":403,"message":"You need to create an artist profile first","data":[] }'])]
-    #[Response(201, description: 'Album created successfully', mediaType: 'application/json', type: 'album')]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(201, description: 'Album created successfully', mediaType: 'application/json', type: 'album', examples: ['{"status":201,"message":"Album created successfully","data":{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[]}}'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"title":["The title field is required."]}}'])]
     public function store(Request $request)
     {
         try {
@@ -87,15 +87,15 @@ class AlbumController extends Controller
         }
     }
 
-    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can update albums',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"Only publishers can update albums","data":[] }',
     '{"status":403,"message":"You can only update your own albums","data":[] }'])]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Album updated successfully', mediaType: 'application/json', type: 'album')]
-    #[Response(500, description: 'Failed to update album', mediaType: 'application/json', type: 'error')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"title":["The title field is required."]}}'])]
+    #[Response(200, description: 'Album updated successfully', mediaType: 'application/json', type: 'album', examples: ['{"status":200,"message":"Album updated successfully","data":{"id":1,"title":"Updated Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[{"id":1,"title":"Song Title"}]}}'])]
+    #[Response(500, description: 'Failed to update album', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to update album","data":{"error":"Detailed error message"}}'])]
     public function update(Request $request, $id)
     {
         try {
@@ -134,14 +134,14 @@ class AlbumController extends Controller
             return ApiFormater::createJSON(500, 'Failed to update album', ['error' => $e->getMessage()]);
         }
     }
-    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'] )]
     #[Response(403,
     description: 'Only publishers can delete albums',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"Only publishers can delete albums","data":[] }',
     '{"status":403,"message":"You can only delete your own albums","data":[] }'])]
-    #[Response(200, description: 'Album deleted successfully', mediaType: 'application/json', type: 'success')]
-    #[Response(500, description: 'Failed to delete album', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Album deleted successfully', mediaType: 'application/json', type: 'success', examples: ['{"status":200,"message":"Album deleted successfully","data":[] }'])]
+    #[Response(500, description: 'Failed to delete album', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to delete album","data":{"error":"Detailed error message"}}'])]
     public function destroy($id)
     {
         try {
