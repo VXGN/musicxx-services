@@ -15,8 +15,8 @@ use Dedoc\Scramble\Attributes\Response;
 
 class SongController extends Controller
 {
-    #[Response(500, description: 'Failed to fetch songs', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song')]
+    #[Response(500, description: 'Failed to fetch songs', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch songs","data":{"error":"Detailed error message"}}'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song', examples: ['{"status":200,"message":"Success","data":[{"id":1,"title":"Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}]}'])]
     public function index()
     {
         try {
@@ -28,9 +28,9 @@ class SongController extends Controller
         }
     }
 
-    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song')]
-    #[Response(500, description: 'Failed to fetch song', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song', examples: ['{"status":200,"message":"Success","data":{"id":1,"title":"Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}}'])]
+    #[Response(500, description: 'Failed to fetch song', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch song","data":{"error":"Detailed error message"}}'])]
     public function show($id)
     {
         try {
@@ -52,9 +52,9 @@ class SongController extends Controller
     examples: ['{"status":403,"message":"Only publishers can create songs","data":[] }',
     '{"status":403,"message":"You need to create an artist profile first","data":[] }',
     '{"status":403,"message":"The album does not belong to your artist profile","data":[] }'])]
-    #[Response(201, description: 'Song created successfully', mediaType: 'application/json', type: 'song')]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(500, description: 'Failed to create song', mediaType: 'application/json', type: 'error')]
+    #[Response(201, description: 'Song created successfully', mediaType: 'application/json', type: 'song', examples: ['{"status":201,"message":"Song created successfully","data":{"id":1,"title":"Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}}'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"title":["The title field is required."],"album_id":["The selected album id is invalid."]}}'])]
+    #[Response(500, description: 'Failed to create song', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to create song","data":{"error":"Detailed error message"}}'])]
     public function store(Request $request)
     {
         try {
@@ -127,16 +127,16 @@ class SongController extends Controller
         }
     }
 
-    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can update songs',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"Only publishers can update songs","data":[] }',
     '{"status":403,"message":"You can only update your own songs","data":[] }',
     '{"status":403,"message":"The album does not belong to your artist profile","data":[] }'])]
-    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
-    #[Response(200, description: 'Song updated successfully', mediaType: 'application/json', type: 'song')]
-    #[Response(500, description: 'Failed to update song', mediaType: 'application/json', type: 'error')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"title":["The title field is required."],"album_id":["The selected album id is invalid."]}}'])]
+    #[Response(200, description: 'Song updated successfully', mediaType: 'application/json', type: 'song', examples: ['{"status":200,"message":"Song updated successfully","data":{"id":1,"title":"Updated Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}}'])]
+    #[Response(500, description: 'Failed to update song', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to update song","data":{"error":"Detailed error message"}}'])]
     public function update(Request $request, $id)
     {
         try {
@@ -207,14 +207,14 @@ class SongController extends Controller
         }
     }
 
-    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can delete songs',
     mediaType: 'application/json', type: 'error',
     examples: ['{"status":403,"message":"Only publishers can delete songs","data":[] }',
     '{"status":403,"message":"You can only delete your own songs","data":[] }'])]
-    #[Response(200, description: 'Song deleted successfully', mediaType: 'application/json', type: 'success')]
-    #[Response(500, description: 'Failed to delete song', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Song deleted successfully', mediaType: 'application/json', type: 'success', examples: ['{"status":200,"message":"Song deleted successfully","data":[] }'])]
+    #[Response(500, description: 'Failed to delete song', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to delete song","data":{"error":"Detailed error message"}}'])]
     public function destroy($id)
     {
         try {
