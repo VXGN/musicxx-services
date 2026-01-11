@@ -8,9 +8,13 @@ use App\Models\Artist;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Dedoc\Scramble\Attributes\Response;
 
 class AlbumController extends Controller
 {
+
+    #[Response(500, description: 'Failed to fetch albums', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch albums","data":{"error":"Detailed error message"}}'])]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album', examples: ['{"status":200,"message":"Success","data":[{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[{"id":1,"title":"Song Title"}]}]}'])]
     public function index()
     {
         try {
@@ -22,6 +26,9 @@ class AlbumController extends Controller
         }
     }
 
+    #[Response(500, description: 'Failed to fetch album', mediaType: 'application/json', type: 'error')]
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album')]
     public function show($id)
     {
         try {
@@ -37,6 +44,13 @@ class AlbumController extends Controller
         }
     }
 
+    #[Response(403,
+    description: 'Only publishers can create albums',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can create albums","data":[] }',
+    '{"status":403,"message":"You need to create an artist profile first","data":[] }'])]
+    #[Response(201, description: 'Album created successfully', mediaType: 'application/json', type: 'album')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
     public function store(Request $request)
     {
         try {
@@ -73,6 +87,15 @@ class AlbumController extends Controller
         }
     }
 
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'Only publishers can update albums',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can update albums","data":[] }',
+    '{"status":403,"message":"You can only update your own albums","data":[] }'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Album updated successfully', mediaType: 'application/json', type: 'album')]
+    #[Response(500, description: 'Failed to update album', mediaType: 'application/json', type: 'error')]
     public function update(Request $request, $id)
     {
         try {
@@ -111,7 +134,14 @@ class AlbumController extends Controller
             return ApiFormater::createJSON(500, 'Failed to update album', ['error' => $e->getMessage()]);
         }
     }
-
+    #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'Only publishers can delete albums',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can delete albums","data":[] }',
+    '{"status":403,"message":"You can only delete your own albums","data":[] }'])]
+    #[Response(200, description: 'Album deleted successfully', mediaType: 'application/json', type: 'success')]
+    #[Response(500, description: 'Failed to delete album', mediaType: 'application/json', type: 'error')]
     public function destroy($id)
     {
         try {
