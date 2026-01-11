@@ -150,7 +150,32 @@ class SongController extends Controller
                 }
             }
 
-            $song->update($request->only(['title', 'album_id', 'duration', 'file_url']));
+            $bucket = 'Music';
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_ROLE_KEY'),
+                    'Content-Type'  => $file->getMimeType(),
+                ])->withBody(
+                    file_get_contents($file->getRealPath()),
+                    $file->getMimeType()
+                )->put(
+                    env('SUPABASE_URL') . "/storage/v1/object/$bucket/$fileName"
+                );
+                if ($response->failed()) {
+                    return ApiFormater::createJSON(500, 'Failed to upload music file', [
+                        'error' => $response->body()
+                    ]);
+                }
+                $fileUrl = env('SUPABASE_URL') . "/storage/v1/object/public/$bucket/$fileName";
+                $request->merge(['file_url' => $fileUrl]);
+            }
+
+
+            $song->fill($request->only(['title', 'album_id', 'duration', 'file_url']));
+            $song->save();
+            $song->refresh();
 
             return ApiFormater::createJSON(200, 'Song updated successfully', $song->load(['artist', 'album']));
         } catch (Exception $e) {
@@ -177,6 +202,21 @@ class SongController extends Controller
 
             if (!$artist || $song->artist_id !== $artist->id) {
                 return ApiFormater::createJSON(403, 'You can only delete your own songs');
+            }
+
+            $bucket = 'Music';
+            $filePath = parse_url($song->file_url, PHP_URL_PATH);
+            $objectPath = ltrim(str_replace("/storage/v1/object/public/$bucket/", '',$filePath), '/');
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_ROLE_KEY'),
+            ])->delete(
+                env('SUPABASE_URL') . "/storage/v1/object/$bucket/$objectPath"
+            );
+            if ($response->failed()) {
+                return ApiFormater::createJSON(500, 'Failed to delete music file', [
+                    'error' => $response->body()
+                ]);
             }
 
             $song->delete();

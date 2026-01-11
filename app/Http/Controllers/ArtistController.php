@@ -99,7 +99,9 @@ class ArtistController extends Controller
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $artist->update($request->only(['name', 'bio']));
+            $artist->fill($request->only(['name', 'bio']));
+            $artist->save();
+            $artist->refresh();
 
             return ApiFormater::createJSON(200, 'Artist updated successfully', $artist->load('user'));
         } catch (Exception $e) {

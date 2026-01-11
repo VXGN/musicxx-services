@@ -39,18 +39,25 @@ class PlaylistController extends Controller
     public function store(Request $request)
     {
         try {
+            $user = auth('api')->user();
+
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'user_id' => 'required|exists:users,id',
+                'song_id' => 'required|exists:songs,id',
             ]);
 
             if ($validator->fails()) {
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $playlist = Playlist::create($request->all());
+            $playlist = Playlist::create([
+                'name' => $request->name,
+                'user_id' => $user->id,
+            ]);
 
-            return ApiFormater::createJSON(201, 'Playlist created successfully', $playlist);
+            $playlist->songs()->attach($request->song_id);
+
+            return ApiFormater::createJSON(201, 'Playlist created successfully', $playlist->load(['user', 'songs']));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to create playlist', ['error' => $e->getMessage()]);
         }
@@ -59,24 +66,30 @@ class PlaylistController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $user = auth('api')->user();
             $playlist = Playlist::find($id);
 
             if (!$playlist) {
                 return ApiFormater::createJSON(404, 'Playlist not found');
             }
 
+            if ($playlist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only update your own playlists');
+            }
+
             $validator = Validator::make($request->all(), [
                 'name' => 'sometimes|required|string|max:255',
-                'user_id' => 'sometimes|required|exists:users,id',
             ]);
 
             if ($validator->fails()) {
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $playlist->update($request->all());
+            $playlist->fill($request->only(['name']));
+            $playlist->save();
+            $playlist->refresh();
 
-            return ApiFormater::createJSON(200, 'Playlist updated successfully', $playlist);
+            return ApiFormater::createJSON(200, 'Playlist updated successfully', $playlist->load(['user', 'songs']));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to update playlist', ['error' => $e->getMessage()]);
         }
@@ -85,10 +98,15 @@ class PlaylistController extends Controller
     public function destroy($id)
     {
         try {
+            $user = auth('api')->user();
             $playlist = Playlist::find($id);
 
             if (!$playlist) {
                 return ApiFormater::createJSON(404, 'Playlist not found');
+            }
+
+            if ($playlist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only delete your own playlists');
             }
 
             $playlist->delete();
@@ -102,10 +120,15 @@ class PlaylistController extends Controller
     public function addSong(Request $request, $id)
     {
         try {
+            $user = auth('api')->user();
             $playlist = Playlist::find($id);
 
             if (!$playlist) {
                 return ApiFormater::createJSON(404, 'Playlist not found');
+            }
+
+            if ($playlist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only add songs to your own playlists');
             }
 
             $validator = Validator::make($request->all(), [
@@ -122,7 +145,7 @@ class PlaylistController extends Controller
 
             $playlist->songs()->attach($request->song_id);
 
-            return ApiFormater::createJSON(200, 'Song added to playlist successfully');
+            return ApiFormater::createJSON(200, 'Song added to playlist successfully', $playlist->load(['user', 'songs']));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to add song to playlist', ['error' => $e->getMessage()]);
         }
@@ -131,15 +154,24 @@ class PlaylistController extends Controller
     public function removeSong($id, $songId)
     {
         try {
+            $user = auth('api')->user();
             $playlist = Playlist::find($id);
 
             if (!$playlist) {
                 return ApiFormater::createJSON(404, 'Playlist not found');
             }
+           
+            if ($playlist->user_id !== $user->id) {
+                return ApiFormater::createJSON(403, 'You can only remove songs from your own playlists');
+            }
+
+            if (!$playlist->songs()->where('song_id', $songId)->exists()) {
+                return ApiFormater::createJSON(404, 'Song not found in playlist');
+            }
 
             $playlist->songs()->detach($songId);
 
-            return ApiFormater::createJSON(200, 'Song removed from playlist successfully');
+            return ApiFormater::createJSON(200, 'Song removed from playlist successfully', $playlist->load(['user', 'songs']));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to remove song from playlist', ['error' => $e->getMessage()]);
         }

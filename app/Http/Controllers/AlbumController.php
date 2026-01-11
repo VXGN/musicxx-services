@@ -102,7 +102,9 @@ class AlbumController extends Controller
                 return ApiFormater::createJSON(422, 'Validation failed', $validator->errors());
             }
 
-            $album->update($request->only(['title', 'cover_image']));
+            $album->fill($request->only(['title', 'cover_image']));
+            $album->save();
+            $album->refresh();
 
             return ApiFormater::createJSON(200, 'Album updated successfully', $album->load(['artist', 'songs']));
         } catch (Exception $e) {
