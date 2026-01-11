@@ -11,8 +11,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
+use Dedoc\Scramble\Attributes\Response;
+
 class SongController extends Controller
 {
+    #[Response(500, description: 'Failed to fetch songs', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song')]
     public function index()
     {
         try {
@@ -24,6 +28,9 @@ class SongController extends Controller
         }
     }
 
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song')]
+    #[Response(500, description: 'Failed to fetch song', mediaType: 'application/json', type: 'error')]
     public function show($id)
     {
         try {
@@ -39,6 +46,15 @@ class SongController extends Controller
         }
     }
 
+    #[Response(403,
+    description: 'Only publishers can create songs',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can create songs","data":[] }',
+    '{"status":403,"message":"You need to create an artist profile first","data":[] }',
+    '{"status":403,"message":"The album does not belong to your artist profile","data":[] }'])]
+    #[Response(201, description: 'Song created successfully', mediaType: 'application/json', type: 'song')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(500, description: 'Failed to create song', mediaType: 'application/json', type: 'error')]
     public function store(Request $request)
     {
         try {
@@ -74,7 +90,7 @@ class SongController extends Controller
                 }
             }
 
-            // up 
+            // up
             $file = $request->file('file');
             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $bucket = 'Music';
@@ -111,6 +127,16 @@ class SongController extends Controller
         }
     }
 
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'Only publishers can update songs',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can update songs","data":[] }',
+    '{"status":403,"message":"You can only update your own songs","data":[] }',
+    '{"status":403,"message":"The album does not belong to your artist profile","data":[] }'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Song updated successfully', mediaType: 'application/json', type: 'song')]
+    #[Response(500, description: 'Failed to update song', mediaType: 'application/json', type: 'error')]
     public function update(Request $request, $id)
     {
         try {
@@ -171,7 +197,7 @@ class SongController extends Controller
                 $fileUrl = env('SUPABASE_URL') . "/storage/v1/object/public/$bucket/$fileName";
                 $request->merge(['file_url' => $fileUrl]);
             }
-            
+
             $song->fill($request->only(['title', 'album_id', 'duration', 'file_url']));
             $song->save();
 
@@ -181,6 +207,14 @@ class SongController extends Controller
         }
     }
 
+    #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'Only publishers can delete songs',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"Only publishers can delete songs","data":[] }',
+    '{"status":403,"message":"You can only delete your own songs","data":[] }'])]
+    #[Response(200, description: 'Song deleted successfully', mediaType: 'application/json', type: 'success')]
+    #[Response(500, description: 'Failed to delete song', mediaType: 'application/json', type: 'error')]
     public function destroy($id)
     {
         try {
