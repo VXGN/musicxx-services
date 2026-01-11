@@ -8,8 +8,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use Dedoc\Scramble\Attributes\Response;
+
 class PlaylistController extends Controller
 {
+    #[Response(500, description: 'Failed to fetch playlists', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist')]
     public function index()
     {
         try {
@@ -21,6 +25,9 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Success', mediaType: 'application/json', type: 'playlist')]
+    #[Response(500, description: 'Failed to fetch playlist', mediaType: 'application/json', type: 'error')]
     public function show($id)
     {
         try {
@@ -36,6 +43,9 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(201, description: 'Playlist created successfully', mediaType: 'application/json', type: 'playlist')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(500, description: 'Failed to create playlist', mediaType: 'application/json', type: 'error')]
     public function store(Request $request)
     {
         try {
@@ -63,6 +73,14 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'You can only update your own playlists',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"You can only update your own playlists","data":[] }'])]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Playlist updated successfully', mediaType: 'application/json', type: 'playlist')]
+    #[Response(500, description: 'Failed to update playlist', mediaType: 'application/json', type: 'error')]
     public function update(Request $request, $id)
     {
         try {
@@ -95,6 +113,13 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'You can only delete your own playlists',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"You can only delete your own playlists","data":[] }'])]
+    #[Response(200, description: 'Playlist deleted successfully', mediaType: 'application/json', type: 'success')]
+    #[Response(500, description: 'Failed to delete playlist', mediaType: 'application/json', type: 'error')]
     public function destroy($id)
     {
         try {
@@ -117,6 +142,15 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'You can only add songs to your own playlists',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"You can only add songs to your own playlists","data":[] }'])]
+    #[Response(409, description: 'Song already in playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Song added to playlist successfully', mediaType: 'application/json', type: 'playlist')]
+    #[Response(500, description: 'Failed to add song to playlist', mediaType: 'application/json', type: 'error')]
     public function addSong(Request $request, $id)
     {
         try {
@@ -151,6 +185,14 @@ class PlaylistController extends Controller
         }
     }
 
+    #[Response(404, description: 'Playlist not found', mediaType: 'application/json', type: 'error')]
+    #[Response(403,
+    description: 'You can only remove songs from your own playlists',
+    mediaType: 'application/json', type: 'error',
+    examples: ['{"status":403,"message":"You can only remove songs from your own playlists","data":[] }'])]
+    #[Response(404, description: 'Song not found in playlist', mediaType: 'application/json', type: 'error')]
+    #[Response(200, description: 'Song removed from playlist successfully', mediaType: 'application/json', type: 'playlist')]
+    #[Response(500, description: 'Failed to remove song from playlist', mediaType: 'application/json', type: 'error')]
     public function removeSong($id, $songId)
     {
         try {
@@ -160,7 +202,7 @@ class PlaylistController extends Controller
             if (!$playlist) {
                 return ApiFormater::createJSON(404, 'Playlist not found');
             }
-           
+
             if ($playlist->user_id !== $user->id) {
                 return ApiFormater::createJSON(403, 'You can only remove songs from your own playlists');
             }
