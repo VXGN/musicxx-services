@@ -56,8 +56,22 @@ Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder at
   + Email: publisher@example.com
   + Password: password123
 
+## Informasi Akun Uji Coba (Contoh)
+
+Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder atau registrasi):
+
+- Publisher (contoh):
+  + Email: publisher@example.com
+  + Password: password123
+
 ---
 
+## Dokumentasi API
+
+**Swagger UI (visual): http://localhost:8000/swagger**
+
+
+### Endpoint API
 ## Dokumentasi API
 
 **Swagger UI (visual): http://localhost:8000/swagger**
@@ -103,6 +117,20 @@ Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder at
 - `DELETE /api/playlists/{id}/songs/{songId}` — Hapus lagu dari playlist
 
 ---
+
+## Struktur Fitur Singkat
+
+- Autentikasi pengguna (JWT)
+- Peran pengguna: `listener`, `publisher`
+- Publisher dapat membuat profil artis, album, dan lagu (upload file)
+- User dapat membuat playlist dan menambahkan lagu
+- Logging permintaan API
+
+---
+[![Contributor Profile](https://contrib.rocks/image?repo=VXGN/musicxx-services)](https://github.com/VXGN/musicxx-services)
+
+## Lisensi
+Framework Laravel adalah open-source di bawah [LICENSE](LICENSE) MIT. 
 
 ## Struktur Fitur Singkat
 
