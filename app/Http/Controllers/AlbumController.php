@@ -9,10 +9,13 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Dedoc\Scramble\Attributes\Response;
+use Dedoc\Scramble\Attributes\Header;
 
+#[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
 class AlbumController extends Controller
 {
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(500, description: 'Failed to fetch albums', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch albums","data":{"error":"Detailed error message"}}'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album', examples: ['{"status":200,"message":"Success","data":[{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[{"id":1,"title":"Song Title"}]}]}'])]
     public function index()
@@ -26,6 +29,7 @@ class AlbumController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(500, description: 'Failed to fetch album', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch album","data":{"error":"Detailed error message"}}'])]
     #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'album', examples: ['{"status":200,"message":"Success","data":{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[{"id":1,"title":"Song Title"}]}}'])]
@@ -44,6 +48,7 @@ class AlbumController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(403,
     description: 'Only publishers can create albums',
     mediaType: 'application/json', type: 'error',
@@ -87,6 +92,7 @@ class AlbumController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can update albums',
@@ -134,6 +140,8 @@ class AlbumController extends Controller
             return ApiFormater::createJSON(500, 'Failed to update album', ['error' => $e->getMessage()]);
         }
     }
+
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Album not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Album not found","data":[] }'] )]
     #[Response(403,
     description: 'Only publishers can delete albums',
