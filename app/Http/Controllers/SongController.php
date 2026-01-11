@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
-
 use Dedoc\Scramble\Attributes\Response;
+use Dedoc\Scramble\Attributes\Header;
 
+#[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
 class SongController extends Controller
 {
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(500, description: 'Failed to fetch songs', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch songs","data":{"error":"Detailed error message"}}'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song', examples: ['{"status":200,"message":"Success","data":[{"id":1,"title":"Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}]}'])]
     public function index()
@@ -28,6 +30,7 @@ class SongController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'song', examples: ['{"status":200,"message":"Success","data":{"id":1,"title":"Song Title","artist":{"id":2,"name":"Artist Name"},"album":{"id":3,"name":"Album Name"}}}'])]
     #[Response(500, description: 'Failed to fetch song', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch song","data":{"error":"Detailed error message"}}'])]
@@ -46,6 +49,7 @@ class SongController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(403,
     description: 'Only publishers can create songs',
     mediaType: 'application/json', type: 'error',
@@ -127,6 +131,7 @@ class SongController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can update songs',
@@ -207,6 +212,7 @@ class SongController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Song not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Song not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can delete songs',
