@@ -123,17 +123,3 @@ Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder at
 
 ## Lisensi
 Framework Laravel adalah open-source di bawah [LICENSE](LICENSE) MIT. 
-
-## Struktur Fitur Singkat
-
-- Autentikasi pengguna (JWT)
-- Peran pengguna: `listener`, `publisher`
-- Publisher dapat membuat profil artis, album, dan lagu (upload file)
-- User dapat membuat playlist dan menambahkan lagu
-- Logging permintaan API
-
----
-[![Contributor Profile](https://contrib.rocks/image?repo=VXGN/musicxx-services)](https://github.com/VXGN/musicxx-services)
-
-## Lisensi
-Framework Laravel adalah open-source di bawah [LICENSE](LICENSE) MIT. 
