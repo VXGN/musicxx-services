@@ -48,15 +48,7 @@ Musicxx-services adalah API RESTful berbasis Laravel untuk manajemen musik yang 
 
 ---
 
-## Informasi Akun Uji Coba (Contoh)
-
-Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder atau registrasi):
-
-- Publisher (contoh):
-  + Email: publisher@example.com
-  + Password: password123
-
-## Informasi Akun Uji Coba (Contoh)
+## Informasi Akun Uji Coba
 
 Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder atau registrasi):
 
