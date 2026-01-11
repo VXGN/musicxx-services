@@ -57,17 +57,9 @@ Gunakan akun berikut untuk pengujian cepat (jika belum dibuat, gunakan seeder at
   + Password: password123
 
 ---
-
 ## Dokumentasi API
 
 **Swagger UI (visual): http://localhost:8000/swagger**
-
-
-### Endpoint API
-## Dokumentasi API
-
-**Swagger UI (visual): http://localhost:8000/swagger**
-
 
 ### Endpoint API
 
