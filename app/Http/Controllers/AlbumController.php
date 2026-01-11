@@ -56,6 +56,7 @@ class AlbumController extends Controller
     '{"status":403,"message":"You need to create an artist profile first","data":[] }'])]
     #[Response(201, description: 'Album created successfully', mediaType: 'application/json', type: 'album', examples: ['{"status":201,"message":"Album created successfully","data":{"id":1,"title":"Album Title","artist":{"id":1,"name":"Artist Name"},"songs":[]}}'])]
     #[Response(422, description: 'Validation failed', mediaType: 'application/json', type: 'error', examples: ['{"status":422,"message":"Validation failed","data":{"title":["The title field is required."]}}'])]
+    #[Response(500, description: 'Failed to create album', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to create album","data":{"error":"Detailed error message"}}'])]
     public function store(Request $request)
     {
         try {
