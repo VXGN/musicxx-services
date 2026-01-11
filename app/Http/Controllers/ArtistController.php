@@ -9,9 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Dedoc\Scramble\Attributes\Response;
+use Dedoc\Scramble\Attributes\Header;
 
+#[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
 class ArtistController extends Controller
 {
+
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(500, description: 'Failed to fetch artists', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch artists","data":{"error":"Detailed error message"}}'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'artist', examples: ['{"status":200,"message":"Success","data":[{"id":1,"name":"Artist Name","bio":"Artist bio","user":{"id":2,"name":"User Name"}}]}'])]
     public function index()
@@ -25,6 +29,7 @@ class ArtistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Artist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Artist not found","data":[] }'])]
     #[Response(200, description: 'Success', mediaType: 'application/json', type: 'artist', examples: ['{"status":200,"message":"Success","data":{"id":1,"name":"Artist Name","bio":"Artist bio","albums":[{"id":1,"title":"Album Title"}],"songs":[{"id":1,"title":"Song Title"}],"user":{"id":2,"name":"User Name"}}}'])]
     #[Response(500, description: 'Failed to fetch artist', mediaType: 'application/json', type: 'error', examples: ['{"status":500,"message":"Failed to fetch artist","data":{"error":"Detailed error message"}}'])]
@@ -43,6 +48,7 @@ class ArtistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(201, description: 'Artist created successfully', mediaType: 'application/json', type: 'artist', examples: ['{"status":201,"message":"Artist created successfully","data":{"id":1,"user_id":2,"name":"Artist Name","bio":"Artist bio","created_at":"2024-01-01T00:00:00.000000Z","updated_at":"2024-01-01T00:00:00.000000Z"}}'])]
     #[Response(403, description: 'Only publishers can create an artist profile', mediaType: 'application/json', type: 'error', examples: ['{"status":403,"message":"Only publishers can create an artist profile","data":[] }'])]
     #[Response(422,
@@ -88,6 +94,7 @@ class ArtistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Artist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Artist not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can update artist profiles',
@@ -135,6 +142,7 @@ class ArtistController extends Controller
         }
     }
 
+    #[Header(name: 'Authorization', description: 'Bearer {token}', required: true)]
     #[Response(404, description: 'Artist not found', mediaType: 'application/json', type: 'error', examples: ['{"status":404,"message":"Artist not found","data":[] }'])]
     #[Response(403,
     description: 'Only publishers can delete artist profiles',
