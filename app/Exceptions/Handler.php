@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
     }
 
     protected function unauthenticated($request, AuthenticationException $exception)
-{
+    {
     return response()->json([
         'status' => 401,
         'message' => 'Unauthorized'
