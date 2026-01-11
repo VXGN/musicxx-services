@@ -171,13 +171,11 @@ class SongController extends Controller
                 $fileUrl = env('SUPABASE_URL') . "/storage/v1/object/public/$bucket/$fileName";
                 $request->merge(['file_url' => $fileUrl]);
             }
-
-
+            
             $song->fill($request->only(['title', 'album_id', 'duration', 'file_url']));
             $song->save();
-            $song->refresh();
 
-            return ApiFormater::createJSON(200, 'Song updated successfully', $song->load(['artist', 'album']));
+            return ApiFormater::createJSON(200, 'Song updated successfully', $song->fresh()->load(['artist', 'album']));
         } catch (Exception $e) {
             return ApiFormater::createJSON(500, 'Failed to update song', ['error' => $e->getMessage()]);
         }
